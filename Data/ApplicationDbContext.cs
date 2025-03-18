@@ -15,5 +15,6 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<AppSetting> AppSettings { get; set; }
     public DbSet<CourseType> CourseTypes { get; set; }
     public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseLevel> CourseLevels { get; set; }
 
 }

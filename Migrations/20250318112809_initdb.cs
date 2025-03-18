@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CeilApp.Migrations
 {
     /// <inheritdoc />
-    public partial class mig1 : Migration
+    public partial class initdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,21 @@ namespace CeilApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,6 +189,29 @@ namespace CeilApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Code = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Duration = table.Column<int>(type: "INTEGER", nullable: false),
+                    CourseTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_CourseTypes_CourseTypeId",
+                        column: x => x.CourseTypeId,
+                        principalTable: "CourseTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppSettings",
                 columns: table => new
                 {
@@ -198,6 +236,35 @@ namespace CeilApp.Migrations
                         column: x => x.CurrentSessionId,
                         principalTable: "Sessions",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseLevels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Duration = table.Column<int>(type: "INTEGER", nullable: false),
+                    CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PreviousCourseLevelId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseLevels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseLevels_CourseLevels_PreviousCourseLevelId",
+                        column: x => x.PreviousCourseLevelId,
+                        principalTable: "CourseLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseLevels_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -241,6 +308,21 @@ namespace CeilApp.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseLevels_CourseId",
+                table: "CourseLevels",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseLevels_PreviousCourseLevelId",
+                table: "CourseLevels",
+                column: "PreviousCourseLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_CourseTypeId",
+                table: "Courses",
+                column: "CourseTypeId");
         }
 
         /// <inheritdoc />
@@ -265,6 +347,9 @@ namespace CeilApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CourseLevels");
+
+            migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
@@ -272,6 +357,12 @@ namespace CeilApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "CourseTypes");
         }
     }
 }

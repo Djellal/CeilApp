@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CeilApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250318093325_add-coursetype-course")]
-    partial class addcoursetypecourse
+    [Migration("20250318113248_PreviousCourseLevelIdNullable")]
+    partial class PreviousCourseLevelIdNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,11 +112,48 @@ namespace CeilApp.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("CeilApp.Models.CourseLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PreviousCourseLevelId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("PreviousCourseLevelId");
+
+                    b.ToTable("CourseLevels");
+                });
+
             modelBuilder.Entity("CeilApp.Models.CourseType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -379,6 +416,23 @@ namespace CeilApp.Migrations
                         .IsRequired();
 
                     b.Navigation("CourseType");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.CourseLevel", b =>
+                {
+                    b.HasOne("CeilApp.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.CourseLevel", "PrevCourseLevel")
+                        .WithMany()
+                        .HasForeignKey("PreviousCourseLevelId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("PrevCourseLevel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
