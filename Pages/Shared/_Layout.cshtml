@@ -3,42 +3,49 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CeilApp</title>
+    <title>@ViewData["Title"] - Ceil UFAS1</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CeilApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Add Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">CeilApp</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>CeilApp
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index"><i class="bi bi-house-door"></i> Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Index"><i class="bi bi-house-door me-1"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy"><i class="bi bi-shield-lock"></i> Privacy</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Privacy"><i class="bi bi-shield-lock me-1"></i> Privacy</a>
                         </li>
                         @if (User.IsInRole(Services.Globals.Admin))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-gear"></i> Admin
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-gear me-1"></i> Admin
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/AppSettings/Index"><i class="bi bi-sliders"></i> Application Settings</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Sessions/Index"><i class="bi bi-calendar-event"></i> Sessions</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/CourseTypes/Index"><i class="bi bi-list-ul"></i> Course Types</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Courses/Index"><i class="bi bi-book"></i> Courses</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Users"><i class="bi bi-people"></i> Users</a></li>
+                                <ul class="dropdown-menu shadow border-0" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/AppSettings/Index"><i class="bi bi-sliders me-2"></i> Application Settings</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Sessions/Index"><i class="bi bi-calendar-event me-2"></i> Sessions</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/CourseTypes/Index"><i class="bi bi-list-ul me-2"></i> Course Types</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Courses/Index"><i class="bi bi-book me-2"></i> Courses</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Users"><i class="bi bi-people me-2"></i> Users</a></li>
                                 </ul>
                             </li>
                         }
@@ -48,22 +55,94 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <!-- Main content with proper spacing and padding -->
+    <div class="container main-container flex-grow-1 overflow-auto">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
+
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Add a fixed footer with contact information -->
+    <footer class="bg-dark text-white text-center py-3 fixed-bottom">
         <div class="container">
-            &copy; 2025 - CeilApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <span>&copy; 2023 CeilApp. All rights reserved.</span>
+            <div class="mt-2">
+                <span>
+                    <i class="bi bi-envelope me-1"></i>Contact us: <a href="mailto:@Services.Globals.appSettings?.Email" class="text-white">@Services.Globals.appSettings?.Email</a> | 
+                    <i class="bi bi-telephone me-1"></i>Phone: @Services.Globals.appSettings?.Tel |
+                    <i class="bi bi-globe me-1"></i>Web site: <a href="@Services.Globals.appSettings?.WebSite" class="link-underline-primary">@Services.Globals.appSettings?.WebSite</a>
+
+                </span>
+            </div>
+            <div class="mt-2">
+                <span>
+                    <a href="@Services.Globals.appSettings?.FB" class="link-underline-primary"><i class="bi bi-facebook"></i></a>
+                    <a href="@Services.Globals.appSettings?.LinkredIn" class="link-underline-primary"><i class="bi bi-linkedin"></i></a>
+                </span>
+            </div>
         </div>
     </footer>
 
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            padding-top: 70px; /* Space for fixed navbar */
+            padding-bottom: 30px; /* Space before footer */
+            flex-grow: 1; /* Allow main container to grow and fill space */
+        }
+
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .dropdown-menu {
+            border-radius: 0.5rem;
+        }
+
+        .social-icon:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+            transition: all 0.3s;
+        }
+        /* Fixed padding for main content area */
+        .main-container {
+            padding-top: 70px; /* Space for fixed navbar */
+            padding-bottom: 30px; /* Space before footer */
+            margin-bottom: 0; /* Remove margin that causes overlap */
+            min-height: calc(100vh - 300px);
+        }
+        /* Fix any footer overlap issues */
+        
+    </style>
 </body>
 </html>

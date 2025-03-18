@@ -10,6 +10,8 @@ namespace CeilApp.Services
         public const string Teacher = "Teacher";
         public const string Student = "Student";
 
+        public static AppSetting appSettings { get;  set; }
+
         public static async Task EnsureParamAsync(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -46,7 +48,7 @@ namespace CeilApp.Services
 
             var dbcontext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-            var appSettings = dbcontext.AppSettings.FirstOrDefault();
+            appSettings = dbcontext.AppSettings.FirstOrDefault();
             if (appSettings == null)
             {
                 appSettings = new AppSetting

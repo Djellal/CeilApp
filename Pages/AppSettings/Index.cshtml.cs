@@ -52,6 +52,21 @@ namespace CeilApp.Pages.AppSettings
             try
             {
                 await _context.SaveChangesAsync();
+
+                Services.Globals.appSettings = new AppSetting { Address = AppSetting.Address,
+                    CurrentSession = AppSetting.CurrentSession ,
+                    CurrentSessionId= AppSetting.CurrentSessionId,
+                    Id = AppSetting.Id,
+                    IsRegistrationOpened = AppSetting.IsRegistrationOpened,
+                    OrganizationName = AppSetting.OrganizationName,
+                    Logo = AppSetting.Logo,
+                    WebSite = AppSetting.WebSite,
+                    FB = AppSetting.FB,
+                    LinkredIn = AppSetting.LinkredIn,
+                    Email = AppSetting.Email,
+                    Tel = AppSetting.Tel
+                    
+                };
             }
             catch (DbUpdateConcurrencyException)
             {
