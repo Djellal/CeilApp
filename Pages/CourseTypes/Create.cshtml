@@ -1,0 +1,39 @@
+@page
+@model CeilApp.Pages.CourseTypes.CreateModel
+@{
+    ViewData["Title"] = "Create Course Type";
+}
+
+<h1><i class="bi bi-plus-circle"></i> Create Course Type</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="CourseType.Name" class="control-label">Name</label>
+                <input asp-for="CourseType.Name" class="form-control" />
+                <span asp-validation-for="CourseType.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="CourseType.NameAr" class="control-label">Name (Arabic)</label>
+                <input asp-for="CourseType.NameAr" class="form-control" />
+                <span asp-validation-for="CourseType.NameAr" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="CourseType.Description" class="control-label">Description</label>
+                <textarea asp-for="CourseType.Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="CourseType.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

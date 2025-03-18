@@ -1,0 +1,23 @@
+@page
+@model CeilApp.Pages.CourseTypes.DetailsModel
+@{
+    ViewData["Title"] = "Course Type Details";
+}
+
+<h1><i class="bi bi-info-circle"></i> Course Type Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.CourseType.Name</dd>
+        <dt class="col-sm-2">Name (Arabic)</dt>
+        <dd class="col-sm-10">@Model.CourseType.NameAr</dd>
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.CourseType.Description</dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.CourseType.Id" class="btn btn-primary">Edit</a>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>

@@ -14,5 +14,7 @@ namespace CeilApp.Models
 
         [MaxLength(250)]
         public string NameAr { get; set; } = "";
+        
+        public string? Description { get; set; }
     }
 }
