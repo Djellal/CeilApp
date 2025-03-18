@@ -1,0 +1,88 @@
+﻿@page
+@model CeilApp.Pages.Sessions.DetailsModel
+
+@{
+    ViewData["Title"] = "Session Details";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="./Index">Sessions</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                </ol>
+            </nav>
+            <h1 class="display-5 fw-bold text-primary"><i class="bi bi-info-circle me-2"></i>Session Details</h1>
+            <p class="lead">View detailed information about this academic session</p>
+            <hr class="my-4" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <span class="badge bg-secondary me-2">@Html.DisplayFor(model => model.Session.SessionCode)</span>
+                        @Html.DisplayFor(model => model.Session.SessionName)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Session Code:</div>
+                        <div class="col-md-8">@Html.DisplayFor(model => model.Session.SessionCode)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Session Name (English):</div>
+                        <div class="col-md-8">@Html.DisplayFor(model => model.Session.SessionName)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Session Name (Arabic):</div>
+                        <div class="col-md-8" dir="rtl">@Html.DisplayFor(model => model.Session.SessionNameAr)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Start Date:</div>
+                        <div class="col-md-8">
+                            <i class="bi bi-calendar-event text-muted me-1"></i>
+                            @Html.DisplayFor(model => model.Session.StartDate)
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">End Date:</div>
+                        <div class="col-md-8">
+                            <i class="bi bi-calendar-event text-muted me-1"></i>
+                            @Html.DisplayFor(model => model.Session.EndDate)
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-page="./Edit" asp-route-id="@Model.Session.Id" class="btn btn-outline-primary me-md-2">
+                            <i class="bi bi-pencil me-1"></i> Edit
+                        </a>
+                        <a asp-page="./Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar-range me-2"></i>Session Timeline</h5>
+                    <p class="card-text">
+                        This session runs for 
+                        @{
+                            var days = (Model.Session.EndDate - Model.Session.StartDate).Days;
+                            <span class="fw-bold">@days days</span>
+                        }
+                        from @Model.Session.StartDate.ToString("MMMM d, yyyy") to @Model.Session.EndDate.ToString("MMMM d, yyyy").
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

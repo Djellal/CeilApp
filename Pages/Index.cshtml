@@ -1,0 +1,69 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container py-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 text-center text-lg-start">
+            <h1 class="display-4 fw-bold text-primary mb-3">Welcome to CeilApp</h1>
+            <p class="lead">Your comprehensive education management system for students, faculty, and administrators.</p>
+            
+            @if (Model.CurrentSession != null)
+            {
+                <div class="d-flex align-items-center mt-4 mb-2">
+                    <div class="bg-light p-3 rounded-3 shadow-sm w-100">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1"><i class="bi bi-calendar3-week me-2"></i>Current Session</h5>
+                                <p class="mb-0 fw-bold">@Model.CurrentSession.SessionName</p>
+                                <small class="text-muted">@Model.CurrentSession.StartDate.ToString("MMM d, yyyy") - @Model.CurrentSession.EndDate.ToString("MMM d, yyyy")</small>
+                            </div>
+                            <div>
+                                @if (Model.IsRegistrationOpen)
+                                {
+                                    <span class="badge bg-success p-2"><i class="bi bi-unlock me-1"></i> Registration Open</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary p-2"><i class="bi bi-lock me-1"></i> Registration Closed</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning mt-4">
+                    <i class="bi bi-exclamation-triangle me-2"></i> No active session is currently configured.
+                </div>
+            }
+            
+            <div class="mt-4">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="#" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-journal-text me-2"></i>My Dashboard
+                    </a>
+                }
+                else
+                {
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </a>
+                    @if (Model.IsRegistrationOpen)
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-person-plus me-2"></i>Register
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+            <img src="~/images/education.svg" class="img-fluid" alt="Education illustration">
+        </div>
+    </div>
+</div>

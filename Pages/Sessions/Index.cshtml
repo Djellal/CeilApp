@@ -1,0 +1,83 @@
+﻿@page
+@model CeilApp.Pages.Sessions.IndexModel
+
+@{
+    ViewData["Title"] = "Academic Sessions";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5 fw-bold text-primary"><i class="bi bi-calendar3 me-2"></i>Academic Sessions</h1>
+            <p class="lead">Manage your academic terms and sessions</p>
+        </div>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>Create New Session
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Session[0].SessionCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Session[0].SessionName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Session[0].SessionNameAr)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Session[0].StartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Session[0].EndDate)
+                            </th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Session) {
+                        <tr>
+                            <td>
+                                <span class="badge bg-secondary">@Html.DisplayFor(modelItem => item.SessionCode)</span>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SessionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SessionNameAr)
+                            </td>
+                            <td>
+                                <i class="bi bi-calendar-event text-muted me-1"></i>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                            <td>
+                                <i class="bi bi-calendar-event text-muted me-1"></i>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Details">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

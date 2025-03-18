@@ -1,0 +1,147 @@
+﻿@page
+@model CeilApp.Pages.AppSettings.IndexModel
+
+@{
+    ViewData["Title"] = "Application Settings";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5 fw-bold text-primary"><i class="bi bi-gear-fill me-2"></i>Application Settings</h1>
+            <p class="lead">Configure your organization information and system settings</p>
+            <hr class="my-4" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="AppSetting.Id" />
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="bi bi-building me-2"></i>Organization Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="AppSetting.OrganizationName" class="form-label fw-bold"></label>
+                                    <input asp-for="AppSetting.OrganizationName" class="form-control" />
+                                    <span asp-validation-for="AppSetting.OrganizationName" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="AppSetting.Address" class="form-label fw-bold"></label>
+                                    <textarea asp-for="AppSetting.Address" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="AppSetting.Address" class="text-danger"></span>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="AppSetting.Tel" class="form-label fw-bold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                            <input asp-for="AppSetting.Tel" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="AppSetting.Tel" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="AppSetting.Email" class="form-label fw-bold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input asp-for="AppSetting.Email" class="form-control" type="email" />
+                                        </div>
+                                        <span asp-validation-for="AppSetting.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="bi bi-globe me-2"></i>Web Presence</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="AppSetting.WebSite" class="form-label fw-bold"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                        <input asp-for="AppSetting.WebSite" class="form-control" type="url" />
+                                    </div>
+                                    <span asp-validation-for="AppSetting.WebSite" class="text-danger"></span>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="AppSetting.FB" class="form-label fw-bold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                                            <input asp-for="AppSetting.FB" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="AppSetting.FB" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="AppSetting.LinkredIn" class="form-label fw-bold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                                            <input asp-for="AppSetting.LinkredIn" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="AppSetting.LinkredIn" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="AppSetting.Logo" class="form-label fw-bold"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-image"></i></span>
+                                        <input asp-for="AppSetting.Logo" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="AppSetting.Logo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="bi bi-sliders me-2"></i>System Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="AppSetting.CurrentSessionId" class="form-label fw-bold"></label>
+                                    <select asp-for="AppSetting.CurrentSessionId" class="form-select" asp-items="ViewBag.CurrentSessionId"></select>
+                                    <span asp-validation-for="AppSetting.CurrentSessionId" class="text-danger"></span>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" asp-for="AppSetting.IsRegistrationOpened" />
+                                    <label class="form-check-label fw-bold" asp-for="AppSetting.IsRegistrationOpened"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-page="./Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-info-circle me-2"></i>Help</h5>
+                    <p class="card-text">These settings control how your application appears to users and how it functions.</p>
+                    <p class="card-text">The current session determines which academic period is active for registrations and other time-sensitive features.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

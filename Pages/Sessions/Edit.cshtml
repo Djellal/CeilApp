@@ -1,0 +1,101 @@
+﻿@page
+@model CeilApp.Pages.Sessions.EditModel
+
+@{
+    ViewData["Title"] = "Edit Session";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="./Index">Sessions</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                </ol>
+            </nav>
+            <h1 class="display-5 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Edit Session</h1>
+            <p class="lead">Modify the details of an existing academic session</p>
+            <hr class="my-4" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Session.Id" />
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Session.SessionCode" class="form-label fw-bold"></label>
+                                <input asp-for="Session.SessionCode" class="form-control" />
+                                <span asp-validation-for="Session.SessionCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Session.SessionName" class="form-label fw-bold"></label>
+                                <input asp-for="Session.SessionName" class="form-control" />
+                                <span asp-validation-for="Session.SessionName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Session.SessionNameAr" class="form-label fw-bold"></label>
+                                <input asp-for="Session.SessionNameAr" class="form-control" dir="rtl" />
+                                <span asp-validation-for="Session.SessionNameAr" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Session.StartDate" class="form-label fw-bold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                    <input asp-for="Session.StartDate" class="form-control" type="date" />
+                                </div>
+                                <span asp-validation-for="Session.StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Session.EndDate" class="form-label fw-bold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                    <input asp-for="Session.EndDate" class="form-control" type="date" />
+                                </div>
+                                <span asp-validation-for="Session.EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-page="./Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left me-1"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i> Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-info-circle me-2"></i>Help</h5>
+                    <p class="card-text">Update the information for this academic session.</p>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> Changing session dates may affect scheduled activities.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
