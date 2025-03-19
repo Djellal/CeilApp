@@ -1,0 +1,75 @@
+@page
+@model CeilApp.Pages.States.DetailsModel
+@{
+    ViewData["Title"] = "State Details";
+}
+
+<div class="container py-4">
+    <h1><i class="bi bi-info-circle"></i> State Details</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-geo-alt"></i> State Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9">@Model.State.Id</dd>
+                        
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9">@Model.State.Name</dd>
+                        
+                        <dt class="col-sm-3">Name (Arabic)</dt>
+                        <dd class="col-sm-9">@Model.State.NameAr</dd>
+                    </dl>
+                    <div>
+                        <a asp-page="./Edit" asp-route-id="@Model.State.Id" class="btn btn-primary">Edit</a>
+                        <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Municipalities Section -->
+    <div class="mt-4">
+        <h2><i class="bi bi-pin-map"></i> Municipalities</h2>
+        
+        @if (Model.Municipalities.Any())
+        {
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Name (Arabic)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Municipalities)
+                                {
+                                    <tr>                                        
+                                        <td>@item.Name</td>
+                                        <td>@item.NameAr</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No municipalities have been added to this state yet.
+            </div>
+        }
+    </div>
+</div>

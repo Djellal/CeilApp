@@ -1,0 +1,61 @@
+@page
+@model CeilApp.Pages.States.DeleteModel
+@{
+    ViewData["Title"] = "Delete State";
+}
+
+<div class="container py-4">
+    <h1><i class="bi bi-trash"></i> Delete State</h1>
+    <hr />
+    
+    <div class="alert alert-danger">
+        <h4><i class="bi bi-exclamation-triangle"></i> Are you sure you want to delete this state?</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-geo-alt"></i> State Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9">@Model.State.Id</dd>
+                        
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9">@Model.State.Name</dd>
+                        
+                        <dt class="col-sm-3">Name (Arabic)</dt>
+                        <dd class="col-sm-9">@Model.State.NameAr</dd>
+                        
+                        <dt class="col-sm-3">Municipalities</dt>
+                        <dd class="col-sm-9">@Model.MunicipalityCount</dd>
+                    </dl>
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    @if (Model.MunicipalityCount > 0)
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i> This state has @Model.MunicipalityCount municipalities associated with it.
+                            You must delete these municipalities first before deleting this state.
+                        </div>
+                        <div>
+                            <a asp-page="./Edit" asp-route-id="@Model.State.Id" class="btn btn-primary">Edit State</a>
+                            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <input type="hidden" asp-for="State.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

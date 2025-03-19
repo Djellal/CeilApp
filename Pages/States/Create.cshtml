@@ -1,0 +1,45 @@
+@page
+@model CeilApp.Pages.States.CreateModel
+@{
+    ViewData["Title"] = "Create State";
+}
+
+<div class="container py-4">
+    <h1><i class="bi bi-plus-circle"></i> Create State</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="State.Id" class="form-label">ID</label>
+                            <input asp-for="State.Id" class="form-control" />
+                            <span asp-validation-for="State.Id" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="State.Name" class="form-label">Name</label>
+                            <input asp-for="State.Name" class="form-control" />
+                            <span asp-validation-for="State.Name" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="State.NameAr" class="form-label">Name (Arabic)</label>
+                            <input asp-for="State.NameAr" class="form-control" />
+                            <span asp-validation-for="State.NameAr" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

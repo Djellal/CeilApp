@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CeilApp.Migrations
 {
     /// <inheritdoc />
-    public partial class initdb : Migration
+    public partial class gendb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,19 @@ namespace CeilApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "States",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_States", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,6 +252,27 @@ namespace CeilApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Municipalities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    StateId = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Municipalities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Municipalities_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CourseLevels",
                 columns: table => new
                 {
@@ -248,7 +282,7 @@ namespace CeilApp.Migrations
                     NameAr = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     Duration = table.Column<int>(type: "INTEGER", nullable: false),
                     CourseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PreviousCourseLevelId = table.Column<int>(type: "INTEGER", nullable: false)
+                    PreviousCourseLevelId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -257,8 +291,7 @@ namespace CeilApp.Migrations
                         name: "FK_CourseLevels_CourseLevels_PreviousCourseLevelId",
                         column: x => x.PreviousCourseLevelId,
                         principalTable: "CourseLevels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CourseLevels_Courses_CourseId",
                         column: x => x.CourseId,
@@ -323,6 +356,11 @@ namespace CeilApp.Migrations
                 name: "IX_Courses_CourseTypeId",
                 table: "Courses",
                 column: "CourseTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Municipalities_StateId",
+                table: "Municipalities",
+                column: "StateId");
         }
 
         /// <inheritdoc />
@@ -350,6 +388,9 @@ namespace CeilApp.Migrations
                 name: "CourseLevels");
 
             migrationBuilder.DropTable(
+                name: "Municipalities");
+
+            migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
@@ -360,6 +401,9 @@ namespace CeilApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "States");
 
             migrationBuilder.DropTable(
                 name: "CourseTypes");

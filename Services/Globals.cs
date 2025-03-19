@@ -59,7 +59,7 @@ namespace CeilApp.Services
                     Tel= "(+213) 036.62.09.96",
                     Logo="",
                     Address= "Université Sétif -1-\r\nCampus El Bez, \r\nEx-Faculté de Droit (Actuellement Département d'Agronomie)",
-                    WebSite = "https://ceil@univ-setif.dz",
+                    WebSite = "https://ceil.univ-setif.dz",
                     FB = "https://www.facebook.com/CEIL.SETIF1UNIVERSITY",
                     LinkredIn= "https://www.linkedin.com/school/universite-ferhat-abbas-setif",
                     IsRegistrationOpened=false

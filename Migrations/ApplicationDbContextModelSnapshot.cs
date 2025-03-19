@@ -184,6 +184,8 @@ namespace CeilApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StateId")
+                        .IsRequired()
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -482,8 +484,10 @@ namespace CeilApp.Migrations
             modelBuilder.Entity("CeilApp.Models.Municipality", b =>
                 {
                     b.HasOne("CeilApp.Models.State", "State")
-                        .WithMany()
-                        .HasForeignKey("StateId");
+                        .WithMany("Municipalities")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("State");
                 });
@@ -537,6 +541,11 @@ namespace CeilApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CeilApp.Models.State", b =>
+                {
+                    b.Navigation("Municipalities");
                 });
 #pragma warning restore 612, 618
         }

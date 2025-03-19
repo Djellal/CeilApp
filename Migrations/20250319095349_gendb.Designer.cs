@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CeilApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250318112809_initdb")]
-    partial class initdb
+    [Migration("20250319095349_gendb")]
+    partial class gendb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,7 +134,7 @@ namespace CeilApp.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PreviousCourseLevelId")
+                    b.Property<int?>("PreviousCourseLevelId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -170,6 +170,34 @@ namespace CeilApp.Migrations
                     b.ToTable("CourseTypes");
                 });
 
+            modelBuilder.Entity("CeilApp.Models.Municipality", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StateId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Municipalities");
+                });
+
             modelBuilder.Entity("CeilApp.Models.Session", b =>
                 {
                     b.Property<int>("Id")
@@ -200,6 +228,27 @@ namespace CeilApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sessions");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.State", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -428,13 +477,22 @@ namespace CeilApp.Migrations
 
                     b.HasOne("CeilApp.Models.CourseLevel", "PrevCourseLevel")
                         .WithMany()
-                        .HasForeignKey("PreviousCourseLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PreviousCourseLevelId");
 
                     b.Navigation("Course");
 
                     b.Navigation("PrevCourseLevel");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.Municipality", b =>
+                {
+                    b.HasOne("CeilApp.Models.State", "State")
+                        .WithMany("Municipalities")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -486,6 +544,11 @@ namespace CeilApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CeilApp.Models.State", b =>
+                {
+                    b.Navigation("Municipalities");
                 });
 #pragma warning restore 612, 618
         }
