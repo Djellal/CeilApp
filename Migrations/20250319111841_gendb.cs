@@ -30,6 +30,7 @@ namespace CeilApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -63,6 +64,21 @@ namespace CeilApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CourseTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Professions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
+                    NameAr = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
+                    FeeValue = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Professions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -300,6 +316,77 @@ namespace CeilApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CourseRegistrations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    InscriptionCode = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    FirstNameAr = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    LastNameAr = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    BirthStateId = table.Column<string>(type: "TEXT", nullable: false),
+                    BirthMunicipalityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Tel = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    ProfessionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CourseLevelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SessionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Notes = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseRegistrations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_CourseLevels_CourseLevelId",
+                        column: x => x.CourseLevelId,
+                        principalTable: "CourseLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_Municipalities_BirthMunicipalityId",
+                        column: x => x.BirthMunicipalityId,
+                        principalTable: "Municipalities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_Professions_ProfessionId",
+                        column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseRegistrations_States_BirthStateId",
+                        column: x => x.BirthStateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AppSettings_CurrentSessionId",
                 table: "AppSettings",
@@ -353,6 +440,41 @@ namespace CeilApp.Migrations
                 column: "PreviousCourseLevelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistration_UserSession",
+                table: "CourseRegistrations",
+                columns: new[] { "UserId", "SessionId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_BirthMunicipalityId",
+                table: "CourseRegistrations",
+                column: "BirthMunicipalityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_BirthStateId",
+                table: "CourseRegistrations",
+                column: "BirthStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_CourseId",
+                table: "CourseRegistrations",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_CourseLevelId",
+                table: "CourseRegistrations",
+                column: "CourseLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_ProfessionId",
+                table: "CourseRegistrations",
+                column: "ProfessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseRegistrations_SessionId",
+                table: "CourseRegistrations",
+                column: "SessionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_CourseTypeId",
                 table: "Courses",
                 column: "CourseTypeId");
@@ -385,19 +507,25 @@ namespace CeilApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CourseLevels");
-
-            migrationBuilder.DropTable(
-                name: "Municipalities");
-
-            migrationBuilder.DropTable(
-                name: "Sessions");
+                name: "CourseRegistrations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "CourseLevels");
+
+            migrationBuilder.DropTable(
+                name: "Municipalities");
+
+            migrationBuilder.DropTable(
+                name: "Professions");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
 
             migrationBuilder.DropTable(
                 name: "Courses");

@@ -16,8 +16,18 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<CourseType> CourseTypes { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseLevel> CourseLevels { get; set; }
-
     public DbSet<State> States { get; set; }
     public DbSet<Municipality> Municipalities { get; set; }
+    public DbSet<CourseRegistration> CourseRegistrations { get; set; }
+    public DbSet<Profession> Professions { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        // Add a unique index on UserId and SessionId to limit registrations per session
+        builder.Entity<CourseRegistration>()
+            .HasIndex(r => new { r.UserId, r.SessionId })
+            .HasDatabaseName("IX_CourseRegistration_UserSession");
+    }
 }

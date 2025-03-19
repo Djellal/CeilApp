@@ -1,0 +1,33 @@
+@page
+@model CeilApp.Pages.Professions.DetailsModel
+@{
+    ViewData["Title"] = "Profession Details";
+}
+
+<div class="container py-4">
+    <h1><i class="bi bi-info-circle"></i> Profession Details</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9">@Model.Profession.Name</dd>
+                        
+                        <dt class="col-sm-3">Name (Arabic)</dt>
+                        <dd class="col-sm-9">@Model.Profession.NameAr</dd>
+                        
+                        <dt class="col-sm-3">Fee Value</dt>
+                        <dd class="col-sm-9">@Model.Profession.FeeValue.ToString("C")</dd>
+                    </dl>
+                    <div>
+                        <a asp-page="./Edit" asp-route-id="@Model.Profession.Id" class="btn btn-primary">Edit</a>
+                        <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

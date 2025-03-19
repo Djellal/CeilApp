@@ -143,6 +143,100 @@ namespace CeilApp.Migrations
                     b.ToTable("CourseLevels");
                 });
 
+            modelBuilder.Entity("CeilApp.Models.CourseRegistration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BirthMunicipalityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BirthStateId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CourseLevelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstNameAr")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("InscriptionCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastNameAr")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProfessionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Tel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BirthMunicipalityId");
+
+                    b.HasIndex("BirthStateId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("CourseLevelId");
+
+                    b.HasIndex("ProfessionId");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("UserId", "SessionId")
+                        .HasDatabaseName("IX_CourseRegistration_UserSession");
+
+                    b.ToTable("CourseRegistrations");
+                });
+
             modelBuilder.Entity("CeilApp.Models.CourseType", b =>
                 {
                     b.Property<int>("Id")
@@ -193,6 +287,30 @@ namespace CeilApp.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("Municipalities");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.Profession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("FeeValue")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Professions");
                 });
 
             modelBuilder.Entity("CeilApp.Models.Session", b =>
@@ -309,6 +427,11 @@ namespace CeilApp.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -359,6 +482,10 @@ namespace CeilApp.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -444,6 +571,13 @@ namespace CeilApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CeilApp.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
             modelBuilder.Entity("CeilApp.Models.AppSetting", b =>
                 {
                     b.HasOne("CeilApp.Models.Session", "CurrentSession")
@@ -479,6 +613,65 @@ namespace CeilApp.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("PrevCourseLevel");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.CourseRegistration", b =>
+                {
+                    b.HasOne("CeilApp.Models.Municipality", "BirthMunicipality")
+                        .WithMany()
+                        .HasForeignKey("BirthMunicipalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.State", "BirthState")
+                        .WithMany()
+                        .HasForeignKey("BirthStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.CourseLevel", "CourseLevel")
+                        .WithMany()
+                        .HasForeignKey("CourseLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.Profession", "Profession")
+                        .WithMany()
+                        .HasForeignKey("ProfessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.Session", "Session")
+                        .WithMany()
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CeilApp.Models.ApplicationUser", "User")
+                        .WithMany("CourseRegistrations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BirthMunicipality");
+
+                    b.Navigation("BirthState");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("CourseLevel");
+
+                    b.Navigation("Profession");
+
+                    b.Navigation("Session");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CeilApp.Models.Municipality", b =>
@@ -546,6 +739,11 @@ namespace CeilApp.Migrations
             modelBuilder.Entity("CeilApp.Models.State", b =>
                 {
                     b.Navigation("Municipalities");
+                });
+
+            modelBuilder.Entity("CeilApp.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("CourseRegistrations");
                 });
 #pragma warning restore 612, 618
         }
