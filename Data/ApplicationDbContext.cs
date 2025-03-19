@@ -17,4 +17,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseLevel> CourseLevels { get; set; }
 
+    public DbSet<State> States { get; set; }
+    public DbSet<Municipality> Municipalities { get; set; }
+
 }
