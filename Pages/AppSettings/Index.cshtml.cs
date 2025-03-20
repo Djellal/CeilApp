@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using CeilApp.Data;
 using CeilApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http; // Ensure this is included
+using System.IO; // Ensure this is included
+using Microsoft.AspNetCore.Hosting;
 
 namespace CeilApp.Pages.AppSettings
 {
@@ -16,35 +19,61 @@ namespace CeilApp.Pages.AppSettings
     public class IndexModel : PageModel
     {
         private readonly CeilApp.Data.ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public IndexModel(CeilApp.Data.ApplicationDbContext context)
+        public IndexModel(CeilApp.Data.ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         [BindProperty]
         public AppSetting AppSetting { get; set; } = default!;
 
+        [BindProperty]
+        public IFormFile LogoFile { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
-            
-            var appsetting =  await _context.AppSettings.FirstOrDefaultAsync();
+            var appsetting = await _context.AppSettings.FirstOrDefaultAsync();
             if (appsetting == null)
             {
                 return NotFound();
             }
             AppSetting = appsetting;
-           ViewData["CurrentSessionId"] = new SelectList(_context.Sessions, "Id", "SessionName");
+            ViewData["CurrentSessionId"] = new SelectList(_context.Sessions, "Id", "SessionName");
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            // Handle logo file upload
+            if (LogoFile != null)
+            {
+                // Create uploads directory if it doesn't exist
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Generate unique filename
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + LogoFile.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // Save the file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await LogoFile.CopyToAsync(fileStream);
+                }
+
+                // Update the logo path in the database
+                AppSetting.Logo = "/uploads/" + uniqueFileName;
             }
 
             _context.Attach(AppSetting).State = EntityState.Modified;
@@ -53,9 +82,11 @@ namespace CeilApp.Pages.AppSettings
             {
                 await _context.SaveChangesAsync();
 
-                Services.Globals.appSettings = new AppSetting { Address = AppSetting.Address,
-                    CurrentSession = AppSetting.CurrentSession ,
-                    CurrentSessionId= AppSetting.CurrentSessionId,
+                // Update global settings
+                Services.Globals.appSettings = new AppSetting { 
+                    Address = AppSetting.Address,
+                    CurrentSession = AppSetting.CurrentSession,
+                    CurrentSessionId = AppSetting.CurrentSessionId,
                     Id = AppSetting.Id,
                     IsRegistrationOpened = AppSetting.IsRegistrationOpened,
                     OrganizationName = AppSetting.OrganizationName,
@@ -65,7 +96,6 @@ namespace CeilApp.Pages.AppSettings
                     LinkredIn = AppSetting.LinkredIn,
                     Email = AppSetting.Email,
                     Tel = AppSetting.Tel
-                    
                 };
             }
             catch (DbUpdateConcurrencyException)

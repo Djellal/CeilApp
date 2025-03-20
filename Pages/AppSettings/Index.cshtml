@@ -18,7 +18,7 @@
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="AppSetting.Id" />
                         
@@ -89,13 +89,17 @@
                                         <span asp-validation-for="AppSetting.LinkredIn" class="text-danger"></span>
                                     </div>
                                 </div>
+                                 <!-- Add file input for logo upload -->
                                 <div class="mb-3">
-                                    <label asp-for="AppSetting.Logo" class="form-label fw-bold"></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                        <input asp-for="AppSetting.Logo" class="form-control" />
-                                    </div>
-                                    <span asp-validation-for="AppSetting.Logo" class="text-danger"></span>
+                                    <label class="form-label fw-bold">Logo</label>
+                                    @if (!string.IsNullOrEmpty(Model.AppSetting.Logo))
+                                    {
+                                        <div class="mb-2">
+                                            <img src="@Model.AppSetting.Logo" alt="Organization Logo" class="img-thumbnail" style="max-height: 100px;" />
+                                        </div>
+                                    }
+                                    <input type="file" class="form-control" asp-for="LogoFile" accept="image/*" />
+                                    <small class="text-muted">Upload a new logo to replace the current one.</small>
                                 </div>
                             </div>
                         </div>
