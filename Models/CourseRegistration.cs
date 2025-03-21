@@ -92,5 +92,14 @@ namespace CeilApp.Models
 
         [MaxLength(250)]
         public string? Notes { get; set; }
+
+        
+       
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Paid fee value")]
+        public decimal PaidFeeValue { get; set; }
+
+        [Display(Name = "Accept the registration terms")]
+        public bool RegistrationTermsAccepted { get; set; }
     }
 }
